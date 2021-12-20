@@ -1,44 +1,19 @@
-/*
-引用URL：https://github.com/ROBOTIS-GIT/OpenCR/blob/master/arduino/opencr_arduino/opencr/libraries/turtlebot3/examples/turtlebot3_friends/turtlebot3_monster/turtlebot3_monster.h
-*/
+/*******************************************************************************
+参考URL：
+https://github.com/ROBOTIS-GIT/OpenCR/blob/master/arduino/opencr_arduino/opencr/libraries/turtlebot3/examples/turtlebot3_friends/turtlebot3_monster/turtlebot3_monster.h
+*******************************************************************************/
 
 #ifndef CULTIVATOR_CORE_CONFIG_H_
 #define CULTIVATOR_CORE_CONFIG_H_
 
-#include <math.h>
+#define USE_USBCON
 
-#include <RC100.h>
+#include <ros.h>
+#include <std_msgs/Empty.h>
+#include <geometry_msgs/Twist.h>
 
 #include "cultivator_core_motor_driver.h"
-
-#define WHEEL_RADIUS                    0.115     // meter
-#define WHEEL_SEPARATION                0.16      // meter (BURGER => 0.16, WAFFLE => 0.287)
-// #define ROBOT_LENGTH                    0.165     // meter
-
-// #define WHEEL_POS_FROM_CENTER_X_1       -0.100    // meter
-// #define WHEEL_POS_FROM_CENTER_Y_1       -0.128    // meter
-// #define WHEEL_POS_FROM_CENTER_X_2       0.100     // meter
-// #define WHEEL_POS_FROM_CENTER_Y_2       -0.128    // meter
-// #define WHEEL_POS_FROM_CENTER_X_3       -0.100    // meter
-// #define WHEEL_POS_FROM_CENTER_Y_3       0.128     // meter
-// #define WHEEL_POS_FROM_CENTER_X_4       0.100     // meter
-// #define WHEEL_POS_FROM_CENTER_Y_4       0.128     // meter
-
-#define WHEEL_POS_FROM_CENTER_X_1       -0.369    // meter
-#define WHEEL_POS_FROM_CENTER_Y_1       -0.218    // meter
-#define WHEEL_POS_FROM_CENTER_X_2       0.369     // meter
-#define WHEEL_POS_FROM_CENTER_Y_2       -0.218    // meter
-#define WHEEL_POS_FROM_CENTER_X_3       -0.369    // meter
-#define WHEEL_POS_FROM_CENTER_Y_3       0.218     // meter
-#define WHEEL_POS_FROM_CENTER_X_4       0.369     // meter
-#define WHEEL_POS_FROM_CENTER_Y_4       0.218     // meter
-
-#define ENCODER_MIN                     -2147483648     // raw
-#define ENCODER_MAX                     2147483648      // raw
-
-#define VELOCITY_CONSTANT_VAULE         1263.632956882  // V = r * w = r * RPM * 0.10472
-                                                        //   = 0.033 * 0.229 * Goal RPM * 0.10472
-                                                        // Goal RPM = V * 1263.632956882
+#include "cultivator_core_cultivate_driver.h"
 
 #define CONTROL_PERIOD                  8000
 
@@ -52,8 +27,35 @@
 #define DEG2RAD(x)                      (x * 0.01745329252)  // *PI/180
 #define RAD2DEG(x)                      (x * 57.2957795131)  // *180/PI
 
-// Function prototypes
-void receiveRemoteControlData(void);
-void controlMonster(void);
+#define MOTOR_MAX_VALUE 1023
+
+float motor_value_rate = 0.1;
+
+// Callback function prototypes
+void commandVelocityCallback(const geometry_msgs::Twist& cmd_vel_msg);
+
+// Publish function prototypes
+
+
+/*******************************************************************************
+* ROS NodeHandle
+*******************************************************************************/
+ros::NodeHandle nh;
+
+/*******************************************************************************
+* Subscriber
+*******************************************************************************/
+ros::Subscriber<geometry_msgs::Twist> cmd_vel_sub("cmd_vel", commandVelocityCallback);
+
+/*******************************************************************************
+* Publisher
+*******************************************************************************/
+
+
+/*******************************************************************************
+* Declaration for motor
+*******************************************************************************/
+CultivatorCoreMotorDriver motor_driver;         // 走行機構クラス宣言
+CultivatorCoreCultivateDriver cultivate_driver; // 耕耘機構クラス宣言
 
 #endif

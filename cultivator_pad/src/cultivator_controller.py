@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-#import rospy
-#from geometry_msgs.msg import Twist
+import rospy
+from geometry_msgs.msg import Twist
 from tkinter import *
 from tkinter import messagebox, ttk
 

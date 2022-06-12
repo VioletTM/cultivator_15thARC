@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="rosserial_arduino" name="service_core" type="serial_node.py" output="screen">
+        <param name="port" value="/dev/ttyACM0"/>
+        <param name="baud" value="57600"/>
+    </node>
+    <node pkg="cultivator_pad" name="test_teleop" type="test_teleop" output="screen" />
+</launch>

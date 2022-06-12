@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="mappingButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>350</y>
+      <width>150</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Mapping</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cultivateButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>425</y>
+      <width>150</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cultivate</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="autoButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>500</y>
+      <width>150</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Auto</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="diggingButton">
+    <property name="geometry">
+     <rect>
+      <x>225</x>
+      <y>500</y>
+      <width>150</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Digging</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="moveableButton">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>500</y>
+      <width>150</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Moveable</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="emgStopButton">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>350</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="frontButton">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>325</y>
+      <width>50</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↑</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>425</y>
+      <width>50</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↓</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="leftButton">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>375</y>
+      <width>50</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>←</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="rightButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>375</y>
+      <width>50</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>→</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopButton">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>375</y>
+      <width>50</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>■</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>frontButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>go_front()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>512</x>
+     <y>365</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>backButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>go_back()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>480</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>526</x>
+     <y>475</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>leftButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>go_rotate_left()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>430</x>
+     <y>421</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>415</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rightButton</sender>
+   <signal>pressed()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>go_rotate_right()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>517</x>
+     <y>414</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>571</x>
+     <y>420</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>430</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>458</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>emgStopButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>emergency_stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>291</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mappingButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>mapping()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>394</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>351</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cultivateButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cultivate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>84</x>
+     <y>466</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>auto_flag()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>513</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>diggingButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>digging()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>344</x>
+     <y>529</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>348</x>
+     <y>504</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>moveableButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>moveable_flag()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>533</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>467</x>
+     <y>506</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>go_front()</slot>
+  <slot>go_back()</slot>
+  <slot>go_rotate_left()</slot>
+  <slot>go_rotate_right()</slot>
+  <slot>stop()</slot>
+  <slot>emergency_stop()</slot>
+  <slot>mapping()</slot>
+  <slot>cultivate()</slot>
+  <slot>auto_flag()</slot>
+  <slot>digging()</slot>
+  <slot>moveable_flag()</slot>
+ </slots>
+</ui>

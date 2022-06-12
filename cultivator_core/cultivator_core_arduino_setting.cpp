@@ -10,8 +10,11 @@ https://github.com/asukiaaa/kagotos/blob/master/atmega/src/main.cpp
 * LEDSetting メソッド
 *******************************************************************************/
 /* LED出力設定 */
-void LEDSetting::setLEDOutput(void)
+void LEDSetting::setLEDOutput(int led_pin)
 {
+    // 出力ピン番号設定
+    this->pin_no = led_pin;
+
     pinMode(this->pin_no, OUTPUT);
     this->LEDOff();     // 出力設定の段階では、LEDは消灯させる
 }
@@ -29,7 +32,7 @@ void LEDSetting::LEDOff(void)
 }
 
 /* LED点滅 */
-void LEDSetting::LEDflash(int mmsecond)
+void LEDSetting::LEDflash(unsigned long mmsecond)
 {
     while(1) {
         this->LEDOn();
@@ -43,10 +46,13 @@ void LEDSetting::LEDflash(int mmsecond)
 * ServoMotorSetting メソッド
 *******************************************************************************/
 /* サーボ／ブラシレスモーター出力設定 */
-void ServoMotorSetting::setMotorOutput(void)
+void ServoMotorSetting::setMotorOutput(int pwm_pin)
 {
+    // 出力ピン番号設定
+    this->pwm_pin_no = pwm_pin;
+
     this->attach(this->pwm_pin_no);
-    this->setMotorAngle(SERVO_STOP_ANGLE);  // 連続回転タイプの場合、停止となる
+    this->setMotorAngle(this->servo_stop_angle);  // 連続回転タイプの場合、停止となる
 }
 
 /* サーボ／ブラシレスモーター角度設定（angle：0~180） */
@@ -78,14 +84,14 @@ void DrivingMotor::setMotorSpeed(int intValue)
     // intValue > 0 -> microsecond < 1500 （正回転）
     // intValue = 0 -> microsecond = 1500 （停止）
     // intValue < 0 -> microsecond > 1500 （逆回転）
-    if (std::abs(intValue) > SERVO_PULSE_WIDTH) {
+    if (std::abs(intValue) > this->servo_pulse_width) {
         if (intValue > 0) {
-            intValue = SERVO_PULSE_WIDTH;
+            intValue = this->servo_pulse_width;
         } else {
-            intValue = SERVO_PULSE_WIDTH * (-1);
+            intValue = this->servo_pulse_width * (-1);
         }
     }
-    this->setMotorAngleMS(1500 - intValue);
+    this->setMotorAngleMS(this->default_pulse_width - intValue);
 }
 
 /* モーター回転速度取得 */
@@ -95,16 +101,21 @@ int DrivingMotor::getMotorSpeed(void)
     // read() < 90 -> microsecond < 1500 （正回転）
     // read() = 90 -> microsecond = 1500 （停止）
     // read() > 90 -> microsecond > 1500 （逆回転）
-    int microsecond = 1500 + ((this->read() - SERVO_STOP_ANGLE) * SERVO_PULSE_WIDTH / SERVO_STOP_ANGLE);
-    return (1500 - microsecond);
+    int microsecond = this->default_pulse_width + ((this->read() - this->servo_stop_angle) * this->servo_pulse_width / this->servo_stop_angle);
+    return (this->default_pulse_width - microsecond);
 }
 
 /*******************************************************************************
 * DCMotorSetting メソッド
 *******************************************************************************/
 /* DCモーター出力設定 */
-void DCMotorSetting::setMotorOutput(void)
+void DCMotorSetting::setMotorOutput(int b_pin, int f_pin, int pwm_pin)
 {
+    // 出力ピン番号設定
+    this->f_pin_no = f_pin;
+    this->b_pin_no = b_pin;
+    this->pwm_pin_no = pwm_pin;
+    
     pinMode(this->f_pin_no, OUTPUT);
     pinMode(this->b_pin_no, OUTPUT);
     if (this->pwm_pin_no >= 2) {
@@ -169,8 +180,14 @@ void CultivateMotor::cultivateOff(void)
 * UpDownMotor メソッド
 *******************************************************************************/
 /* センサー入力設定 */
-void UpDownMotor::setSensorInput(void)
+void UpDownMotor::setSensorInput(int over_limit_pin, int under_limit_pin, int up_pin, int down_pin)
 {
+    // 入力ピン番号設定
+    this->over_limit_pin_no = over_limit_pin;
+    this->under_limit_pin_no = under_limit_pin;
+    this->up_pin_no = up_pin;
+    this->down_pin_no = down_pin;
+    
     pinMode(this->over_limit_pin_no, INPUT);
     pinMode(this->under_limit_pin_no, INPUT);
     pinMode(this->up_pin_no, INPUT);

@@ -3,35 +3,50 @@
 
 #include "cultivator_core_arduino_setting.h"
 
-#define CULTIVATE_MOTOR_1_PIN       6
-#define CULTIVATE_MOTOR_2_PIN       7
-#define LIFT_UP_PIN                 8
-#define LIFT_DOWN_PIN               9
+enum class cultivate_cmd {
+    work_no,
+    work_begin,
+    work_end
+};
 
-#define CULTIVATE_MOTOR_PWM_PIN     -1  //2021/12現在、使用する予定はないのでダミー入力
-#define LIFT_PWM_PIN                -1  //2021/12現在、使用する予定はないのでダミー入力
-
-#define OVER_LIMIT_PIN    40
-#define UP_PIN            41
-#define DOWN_PIN          42
-#define UNDER_LIMIT_PIN   43
+enum class cultivate_feedback {
+    exception,
+    standby,
+    dropping,
+    working,
+    raising
+};
 
 /* 耕耘機構クラス */
 class CultivatorCoreCultivateDriver
 {
 private:
-    // 掘削モーター
-    CultivateMotor cultivateMotor(CULTIVATE_MOTOR_1_PIN, CULTIVATE_MOTOR_2_PIN, CULTIVATE_MOTOR_PWM_PIN);
-    // 上下モーター
-    UpDownMotor updownMotor(LIFT_UP_PIN, LIFT_DOWN_PIN, LIFT_PWM_PIN, OVER_LIMIT_PIN, UNDER_LIMIT_PIN, UP_PIN, DOWN_PIN);
+    const int cultivate_pin_1 = 6;
+    const int cultivate_pin_2 = 7;
+    const int cultivate_pwm_pin = -1;     // 使用予定はないのでダミー入力
+    const int lift_up_pin = 8;
+    const int lift_down_pin = 9;
+    const int lift_pwm_pin = -1;    // 使用予定はないのでダミー入力
+    const int over_limit_pin = 40;
+    const int up_pin = 41;
+    const int down_pin = 42;
+    const int under_limit_pin = 43;
+    
+    CultivateMotor cultivateMotor;  // 掘削モーター
+    UpDownMotor updownMotor;        // 上下モーター
+    WaitSetting runWait;
 
 public:
     CultivatorCoreCultivateDriver(){}       // コンストラクタ
     ~CultivatorCoreCultivateDriver(){}      // デストラクタ
-    bool init(void);            // 初期化
+    void init(void);            // 初期化
     bool catchException(void);  // 例外検出
-    bool cultivateBegin(void);  // 機構を下げて耕耘を始める
-    bool cultivateEnd(void);    // 機構を上げて耕耘を終える
-}
+    void cultivateBegin(void);  // 機構を下げて耕耘を始める
+    void cultivateEnd(void);    // 機構を上げて耕耘を終える
+    cultivate_feedback cultivateState(void);    // 耕運作業の状態をフィードバック
+    /* テスト用メソッド */
+    void testDCMotor(void);
+    /* テスト用メソッド */
+};
 
 #endif

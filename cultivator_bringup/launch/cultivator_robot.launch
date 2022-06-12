@@ -1,12 +1,16 @@
 <launch>
+    <!--
     <arg name="multi_robot_name" default=""/>
     <arg name="set_lidar_frame_id" default="laser_frame"/>
+    -->
 
+    <include file="$(find cultivator_bringup)/launch/cultivator_core.launch" />
+    <include file="$(find cultivator_bringup)/launch/cultivator_lidar.launch" />
+    <!--
     <include file="$(find cultivator_bringup)/launch/cultivator_core.launch">
         <arg name="multi_robot_name" value="$(arg multi_robot_name)">
     </include>
-    <!--
-    <include file="$(fing cultivator_bringup)/launch/cultivator_lidar.launch">
+    <include file="$(find cultivator_bringup)/launch/cultivator_lidar.launch">
         <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
     </include>
     -->

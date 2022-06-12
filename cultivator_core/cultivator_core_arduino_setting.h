@@ -9,9 +9,6 @@ https://github.com/asukiaaa/kagotos/blob/master/atmega/src/main.cpp
 #include <Arduino.h>
 #include <Servo.h>
 
-#define SERVO_STOP_ANGLE    90
-#define SERVO_PULSE_WIDTH   500
-
 /*******************************************************************************
 * LED関連クラス
 *******************************************************************************/
@@ -22,12 +19,38 @@ protected:
     int pin_no;     // LEDピン番号
 
 public:
-    LEDSetting(int led_pin){ this->pin_no = led_pin; }  // コンストラクタ
-    ~LEDSetting(){}                 // デストラクタ
-    void setLEDOutput(void);        // LED出力設定
+    LEDSetting(){}      // コンストラクタ
+    ~LEDSetting(){}     // デストラクタ
+    void setLEDOutput(int led_pin); // LED出力設定
     void LEDOn(void);               // LED点灯
     void LEDOff(void);              // LED消灯
-    void LEDflash(int mmsecond);    // LED点滅
+    void LEDflash(unsigned long mmsecond);  // LED点滅
+};
+
+/*******************************************************************************
+* 経過時間表示関連クラス
+*******************************************************************************/
+/* 経過時間表示設定クラス */
+class TimeSetting
+{
+public:
+    TimeSetting(){}    // コンストラクタ
+    ~TimeSetting(){}   // デストラクタ
+    unsigned long milliseconds(void){ return millis(); }    // ミリ秒
+    unsigned long microseconds(void){ return micros(); }    // マイクロ秒
+};
+
+/*******************************************************************************
+* 時間停止関連クラス
+*******************************************************************************/
+/* 時間停止設定クラス */
+class WaitSetting
+{
+public:
+    WaitSetting(){}     // コンストラクタ
+    ~WaitSetting(){}    // デストラクタ
+    void wait(unsigned long mmsecond){ delay(mmsecond); }   // ミリ秒
+    void waitMS(unsigned long microsecond){ delayMicroseconds(microsecond); }   // マイクロ秒
 };
 
 /*******************************************************************************
@@ -38,21 +61,24 @@ class ServoMotorSetting : public Servo
 {
 protected:
     int pwm_pin_no;     // PWMピン番号
+    const int servo_stop_angle = 90;
+    const int servo_pulse_width = 500;
+    const int default_pulse_width = 1500;
     
 public:
-    ServoMotorSetting(int pwm_pin){ this->pwm_pin_no = pwm_pin; }   // コンストラクタ
-    ~ServoMotorSetting(){ this->detach(); }                         // デストラクタ
-    void setMotorOutput(void);              // モーター出力設定
+    ServoMotorSetting(){}                   // コンストラクタ
+    ~ServoMotorSetting(){ this->detach(); } // デストラクタ
+    void setMotorOutput(int pwm_pin);       // モーター出力設定
     void setMotorAngle(int angle);          // モーター角度設定
     void setMotorAngleMS(int microsecond);  // モーター角度設定
-}
+};
 
 /* 車輪駆動用モーター設定クラス */
 class DrivingMotor : public ServoMotorSetting
 {
 public:
-    DrivingMotor(int pwm_pin) : ServoMotorSetting(pwm_pin){}     // コンストラクタ
-    ~DrivingMotor(){}                   // デストラクタ
+    DrivingMotor(){}    // コンストラクタ
+    ~DrivingMotor(){}   // デストラクタ
     void setMotorSpeed(int intValue);   // モーター速度設定
     int getMotorSpeed(void);            // モーター速度取得
 };
@@ -72,14 +98,9 @@ protected:
     int pwm_pin_no;     // PWMピン番号
 
 public:
-    DCMotorSetting(int b_pin, int f_pin, int pwm_pin)     // コンストラクタ
-    {
-        this->f_pin_no = f_pin;
-        this->b_pin_no = b_pin;
-        this->pwm_pin_no = pwm_pin;
-    }
-    ~DCMotorSetting(){}                 // デストラクタ
-    void setMotorOutput(void);          // DCモーター出力設定
+    DCMotorSetting(){}      // コンストラクタ
+    ~DCMotorSetting(){}     // デストラクタ
+    void setMotorOutput(int b_pin, int f_pin, int pwm_pin); // DCモーター出力設定
     void setMotorSpeed(int intValue);   // DCモーター速度設定
     void setMotorBreak(void);           // DCモーターブレーキ
 };
@@ -88,8 +109,8 @@ public:
 class CultivateMotor : public DCMotorSetting
 {
 public:
-    CultivateMotor(int b_pin, int f_pin, int pwm_pin) : DCMotorSetting(b_pin, f_pin, pwm_pin){}   // コンストラクタ
-    ~CultivateMotor(){}         // デストラクタ
+    CultivateMotor(){}      // コンストラクタ
+    ~CultivateMotor(){}     // デストラクタ
     void cultivateOn(void);     // 掘削開始（モーター回転、PWM制御なし）
     void cultivateOff(void);    // 掘削終了（モーター停止、PWM制御なし）
 };
@@ -98,7 +119,7 @@ public:
 class UpDownMotor : public DCMotorSetting
 {
 private:
-    const int updown_after_wait_ms = 3000;  // 上昇／下降開始後の待機時間[ms]
+    const unsigned long updown_after_wait_ms = 3000;    // 上昇／下降開始後の待機時間[ms]
 
 protected:
     int over_limit_pin_no;
@@ -107,17 +128,9 @@ protected:
     int down_pin_no;
 
 public:
-    // コンストラクタ
-    UpDownMotor(int b_pin, int f_pin, int pwm_pin, int over_limit_pin, int under_limit_pin, int up_pin, int down_pin)
-        : DCMotorSetting(b_pin, f_pin, pwm_pin)
-    {
-        this->over_limit_pin_no = over_limit_pin;
-        this->under_limit_pin_no = under_limit_pin;
-        this->up_pin_no = up_pin;
-        this->down_pin_no = down_pin;
-    }
-    ~UpDownMotor(){}            // デストラクタ
-    void setSensorInput(void);  // センサー入力設定
+    UpDownMotor(){}     // コンストラクタ
+    ~UpDownMotor(){}    // デストラクタ
+    void setSensorInput(int over_limit_pin, int under_limit_pin, int up_pin, int down_pin);  // センサー入力設定
     bool raise(void);           // 耕耘機構上昇（PWM制御なし）
     bool drop(void);            // 耕耘機構下降（PWM制御なし）
     void stop(bool emergency);  // 上昇／下降停止

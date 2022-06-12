@@ -1,6 +1,3 @@
-################################################################################
-# Set minimum required version of cmake, project name and compile options
-################################################################################
 cmake_minimum_required(VERSION 3.0.2)
 project(cultivator_pad)
 
@@ -12,6 +9,7 @@ project(cultivator_pad)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  std_msgs
   rospy
 )
 
@@ -22,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-catkin_python_setup()
+#catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -65,7 +63,6 @@ catkin_python_setup()
 ## Generate actions in the 'action' folder
 # add_action_files(
 #   FILES
-#   Action1.action
 #   Action2.action
 # )
 
@@ -73,6 +70,7 @@ catkin_python_setup()
 # generate_messages(
 #   DEPENDENCIES
 #   geometry_msgs
+#   std_msgs
 # )
 
 ################################################
@@ -107,7 +105,10 @@ catkin_python_setup()
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES cultivator_pad
-  CATKIN_DEPENDS geometry_msgs rospy
+  CATKIN_DEPENDS
+  geometry_msgs
+  std_msgs
+  rospy
 #  DEPENDS system_lib
 )
 
@@ -117,10 +118,10 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(
+include_directories(
 # include
-#  ${catkin_INCLUDE_DIRS}
-# )
+  ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -161,10 +162,10 @@ catkin_package(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS
-  scripts/my_python_script
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+#catkin_install_python(PROGRAMS
+#  scripts/my_python_script
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html

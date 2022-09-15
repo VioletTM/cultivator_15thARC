@@ -37,7 +37,7 @@ class EmergencySwitch(GPIOSetting):
         self._OutLow(self.emg_pin)
 
 # 運転準備設定クラス
-class RunPrepare(GPIOSetting):
+class RunPrepareSwitch(GPIOSetting):
     def __init__(self):
         super().__init__()
         self.switch_pin = 17    # 運転準備スイッチ

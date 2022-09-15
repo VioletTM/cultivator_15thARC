@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_msgs
   sensor_msgs
   std_msgs
+  roscpp
   rospy
 )
 
@@ -112,6 +113,7 @@ catkin_package(
   diagnostic_msgs
   sensor_msgs
   std_msgs
+  roscpp
   rospy
 #  DEPENDS system_lib
 )

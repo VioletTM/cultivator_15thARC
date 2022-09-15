@@ -3,13 +3,14 @@
 import rospy
 from std_msgs.msg import UInt16
 from enum_setting import CommandType, RobotState, MotorState, CultivateCmd, CultivateFb
-from gpio_setting import Signal, EmergencySwitch
+from gpio_setting import Signal, EmergencySwitch, RunPrepareSwitch
 
 class ServiceCore():
     def __init__(self):
-        self._initParam()                   # 各種パラメータ初期化
-        self.lump = Signal()                # シグナルランプ
-        self.emergency = EmergencySwitch()  # 非常停止スイッチ
+        self._initParam()                       # 各種パラメータ初期化
+        self.lump = Signal()                    # シグナルランプ
+        self.emergency = EmergencySwitch()      # 非常停止スイッチ
+        self.runprepare = RunPrepareSwitch()    # 運転準備スイッチ
         # Publisher
         self.cultivate_pub = rospy.Publisher('/cultivate', UInt16)      # 耕運作業命令をArduinoへ送信
         self.robot_state_pub = rospy.Publisher('/robot_state', UInt16)  # ロボットの作業状況をPCへ送信
@@ -89,6 +90,8 @@ class ServiceCore():
         self.robot_state_msg = RobotState.standby
         self.emergency.switchOff()  # 非常停止解除
         self.lump.yellowOn()
+        self.runprepare.switchOff()
+        self.runprepare.signalOff()
     ## マッピング処理
     def _robot_state_mapping(self):
         self.robot_state_msg = RobotState.mapping
@@ -101,6 +104,8 @@ class ServiceCore():
     def _robot_state_other(self):
         self.robot_state_msg = RobotState.other
         self.lump.blueOn()
+        self.runprepare.switchOn()
+        self.runprepare.signalOn()
     
     # ロボットの作業状況をPCへ送信
     def send_robot_state_msg(self):
